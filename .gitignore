@@ -1,3 +1,4 @@
+
 # Built application files
 *.apk
 *.ap_
@@ -38,3 +39,49 @@ captures/
 
 # Keystore files
 *.jks
+
+.idea/
+
+
+### Android Patch ###
+gen-external-apklibs
+
+
+#Eclipse Files
+.classpath
+.settings/
+.metadata/
+
+#Ant Files
+ant.properties
+custom_rules.xml
+build.xml
+
+
+#-----
+# For macOS
+
+### macOS ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon must end with two \r
+Icon
+# Thumbnails
+._*
+# Files that might appear in the root of a volume
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+# Directories potentially created on remote AFP share
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+gradle.properties
