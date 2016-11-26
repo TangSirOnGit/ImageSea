@@ -1,9 +1,12 @@
 package com.tang.imagesea.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tangsir on 2016/11/24.
  */
-public class ExifBean {
+public class ExifBean implements Parcelable {
     /**
      * make : Canon
      * model : Canon EOS 1100D
@@ -78,4 +81,43 @@ public class ExifBean {
                 ", iso=" + iso +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.make);
+        dest.writeString(this.model);
+        dest.writeString(this.exposure_time);
+        dest.writeString(this.aperture);
+        dest.writeString(this.focal_length);
+        dest.writeInt(this.iso);
+    }
+
+    public ExifBean() {
+    }
+
+    protected ExifBean(Parcel in) {
+        this.make = in.readString();
+        this.model = in.readString();
+        this.exposure_time = in.readString();
+        this.aperture = in.readString();
+        this.focal_length = in.readString();
+        this.iso = in.readInt();
+    }
+
+    public static final Parcelable.Creator<ExifBean> CREATOR = new Parcelable.Creator<ExifBean>() {
+        @Override
+        public ExifBean createFromParcel(Parcel source) {
+            return new ExifBean(source);
+        }
+
+        @Override
+        public ExifBean[] newArray(int size) {
+            return new ExifBean[size];
+        }
+    };
 }

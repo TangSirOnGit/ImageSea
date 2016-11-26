@@ -1,12 +1,16 @@
 package com.tang.imagesea.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by tangsir on 2016/11/24.
  */
 
-public class PhotoBean {
+public class PhotoBean implements Parcelable {
 
     /**
      * id : IQgciTJYSo8
@@ -156,4 +160,58 @@ public class PhotoBean {
         this.categories = categories;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.created_at);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
+        dest.writeString(this.color);
+        dest.writeInt(this.downloads);
+        dest.writeInt(this.likes);
+        dest.writeByte(this.liked_by_user ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.urls, flags);
+        dest.writeParcelable(this.links, flags);
+        dest.writeParcelable(this.user, flags);
+        dest.writeList(this.current_user_collections);
+        dest.writeList(this.categories);
+    }
+
+    public PhotoBean() {
+    }
+
+    protected PhotoBean(Parcel in) {
+        this.id = in.readString();
+        this.created_at = in.readString();
+        this.width = in.readInt();
+        this.height = in.readInt();
+        this.color = in.readString();
+        this.downloads = in.readInt();
+        this.likes = in.readInt();
+        this.liked_by_user = in.readByte() != 0;
+        this.urls = in.readParcelable(PhotoUrlBean.class.getClassLoader());
+        this.links = in.readParcelable(PhotoLinkBean.class.getClassLoader());
+        this.user = in.readParcelable(UserBean.class.getClassLoader());
+        this.current_user_collections = new ArrayList<CollectionBean>();
+        in.readList(this.current_user_collections, CollectionBean.class.getClassLoader());
+        this.categories = new ArrayList<CategoryBean>();
+        in.readList(this.categories, CategoryBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<PhotoBean> CREATOR = new Parcelable.Creator<PhotoBean>() {
+        @Override
+        public PhotoBean createFromParcel(Parcel source) {
+            return new PhotoBean(source);
+        }
+
+        @Override
+        public PhotoBean[] newArray(int size) {
+            return new PhotoBean[size];
+        }
+    };
 }

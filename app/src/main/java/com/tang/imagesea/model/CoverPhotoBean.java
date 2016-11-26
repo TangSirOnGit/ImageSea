@@ -1,11 +1,15 @@
 package com.tang.imagesea.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by tangsir on 2016/11/24.
  */
-public class CoverPhotoBean {
+public class CoverPhotoBean implements Parcelable {
     private String id;
     private String created_at;
     private int width;
@@ -128,4 +132,53 @@ public class CoverPhotoBean {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.id);
+        dest.writeString(this.created_at);
+        dest.writeInt(this.width);
+        dest.writeInt(this.height);
+        dest.writeString(this.color);
+        dest.writeInt(this.likes);
+        dest.writeByte(this.liked_by_user ? (byte) 1 : (byte) 0);
+        dest.writeParcelable(this.user, flags);
+        dest.writeParcelable(this.urls, flags);
+        dest.writeParcelable(this.links, flags);
+        dest.writeList(this.categories);
+    }
+
+    public CoverPhotoBean() {
+    }
+
+    protected CoverPhotoBean(Parcel in) {
+        this.id = in.readString();
+        this.created_at = in.readString();
+        this.width = in.readInt();
+        this.height = in.readInt();
+        this.color = in.readString();
+        this.likes = in.readInt();
+        this.liked_by_user = in.readByte() != 0;
+        this.user = in.readParcelable(UserBean.class.getClassLoader());
+        this.urls = in.readParcelable(PhotoUrlBean.class.getClassLoader());
+        this.links = in.readParcelable(PhotoLinkBean.class.getClassLoader());
+        this.categories = new ArrayList<CategoryBean>();
+        in.readList(this.categories, CategoryBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CoverPhotoBean> CREATOR = new Parcelable.Creator<CoverPhotoBean>() {
+        @Override
+        public CoverPhotoBean createFromParcel(Parcel source) {
+            return new CoverPhotoBean(source);
+        }
+
+        @Override
+        public CoverPhotoBean[] newArray(int size) {
+            return new CoverPhotoBean[size];
+        }
+    };
 }

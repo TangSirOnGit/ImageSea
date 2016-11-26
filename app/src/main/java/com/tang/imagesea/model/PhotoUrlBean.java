@@ -1,9 +1,12 @@
 package com.tang.imagesea.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tangsir on 2016/11/24.
  */
-public class PhotoUrlBean {
+public class PhotoUrlBean implements Parcelable {
     /**
      * raw : https://images.unsplash.com/photo-1440780336166-b19530cff5ec
      * full : https://images.unsplash.com/photo-1440780336166-b19530cff5ec?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=854db164d8ebdc6b00d3e16cebecaace
@@ -56,4 +59,41 @@ public class PhotoUrlBean {
     public void setThumb(String thumb) {
         this.thumb = thumb;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.raw);
+        dest.writeString(this.full);
+        dest.writeString(this.regular);
+        dest.writeString(this.small);
+        dest.writeString(this.thumb);
+    }
+
+    public PhotoUrlBean() {
+    }
+
+    protected PhotoUrlBean(Parcel in) {
+        this.raw = in.readString();
+        this.full = in.readString();
+        this.regular = in.readString();
+        this.small = in.readString();
+        this.thumb = in.readString();
+    }
+
+    public static final Parcelable.Creator<PhotoUrlBean> CREATOR = new Parcelable.Creator<PhotoUrlBean>() {
+        @Override
+        public PhotoUrlBean createFromParcel(Parcel source) {
+            return new PhotoUrlBean(source);
+        }
+
+        @Override
+        public PhotoUrlBean[] newArray(int size) {
+            return new PhotoUrlBean[size];
+        }
+    };
 }

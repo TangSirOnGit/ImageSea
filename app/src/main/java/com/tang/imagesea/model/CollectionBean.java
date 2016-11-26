@@ -2,10 +2,13 @@ package com.tang.imagesea.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tangsir on 2016/11/24.
  */
-public class CollectionBean {
+public class CollectionBean implements Parcelable {
     private int id;
     private String title;
     private String description;
@@ -137,4 +140,54 @@ public class CollectionBean {
         this.links = links;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.title);
+        dest.writeString(this.description);
+        dest.writeString(this.published_at);
+        dest.writeByte(this.curated ? (byte) 1 : (byte) 0);
+        dest.writeByte(this.featured ? (byte) 1 : (byte) 0);
+        dest.writeInt(this.total_photos);
+        dest.writeByte(this.privateX ? (byte) 1 : (byte) 0);
+        dest.writeString(this.share_key);
+        dest.writeParcelable(this.cover_photo, flags);
+        dest.writeParcelable(this.user, flags);
+        dest.writeParcelable(this.links, flags);
+    }
+
+    public CollectionBean() {
+    }
+
+    protected CollectionBean(Parcel in) {
+        this.id = in.readInt();
+        this.title = in.readString();
+        this.description = in.readString();
+        this.published_at = in.readString();
+        this.curated = in.readByte() != 0;
+        this.featured = in.readByte() != 0;
+        this.total_photos = in.readInt();
+        this.privateX = in.readByte() != 0;
+        this.share_key = in.readString();
+        this.cover_photo = in.readParcelable(CoverPhotoBean.class.getClassLoader());
+        this.user = in.readParcelable(UserBean.class.getClassLoader());
+        this.links = in.readParcelable(CollectionLinkBean.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<CollectionBean> CREATOR = new Parcelable.Creator<CollectionBean>() {
+        @Override
+        public CollectionBean createFromParcel(Parcel source) {
+            return new CollectionBean(source);
+        }
+
+        @Override
+        public CollectionBean[] newArray(int size) {
+            return new CollectionBean[size];
+        }
+    };
 }

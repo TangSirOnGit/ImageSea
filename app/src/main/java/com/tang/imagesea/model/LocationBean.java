@@ -1,9 +1,12 @@
 package com.tang.imagesea.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by tangsir on 2016/11/24.
  */
-public class LocationBean {
+public class LocationBean implements Parcelable {
     /**
      * title : Marina Barrage, Singapore
      * name : Marina Barrage
@@ -13,7 +16,7 @@ public class LocationBean {
      */
     private String title;
     private String name;
-    private Object city;
+    private String city;
     private String country;
 
     private PositionBean position;
@@ -34,11 +37,11 @@ public class LocationBean {
         this.name = name;
     }
 
-    public Object getCity() {
+    public String getCity() {
         return city;
     }
 
-    public void setCity(Object city) {
+    public void setCity(String city) {
         this.city = city;
     }
 
@@ -68,4 +71,41 @@ public class LocationBean {
                 ", position=" + position +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.title);
+        dest.writeString(this.name);
+        dest.writeString(this.city);
+        dest.writeString(this.country);
+        dest.writeParcelable(this.position, flags);
+    }
+
+    public LocationBean() {
+    }
+
+    protected LocationBean(Parcel in) {
+        this.title = in.readString();
+        this.name = in.readString();
+        this.city = in.readString();
+        this.country = in.readString();
+        this.position = in.readParcelable(PositionBean.class.getClassLoader());
+    }
+
+    public static final Creator<LocationBean> CREATOR = new Creator<LocationBean>() {
+        @Override
+        public LocationBean createFromParcel(Parcel source) {
+            return new LocationBean(source);
+        }
+
+        @Override
+        public LocationBean[] newArray(int size) {
+            return new LocationBean[size];
+        }
+    };
 }
