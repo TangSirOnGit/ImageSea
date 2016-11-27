@@ -17,7 +17,7 @@ import retrofit2.http.Query;
  */
 
 public interface UnSplashServices {
-    @Headers(BuildConfig.API_KEY)
+    @Headers({BuildConfig.API_KEY, "Cache-Control: public, max-age=3600"})
     @GET("/photos")
     Call<List<PhotoBean>> getPhotos(
             @Query("page") int page,

@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.tang.imagesea.R;
+import com.tang.imagesea.network.UnSplash;
 import com.tang.imagesea.ui.adapter.SectionPagerAdapter;
 import com.tang.imagesea.utils.ImageUtils;
 import com.tang.imagesea.utils.LogUtils;
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LogUtils.init();
+        UnSplash.getInstance().init(getApplicationContext());
         ImageUtils.initImageLoader(getApplicationContext());
         setContentView(R.layout.activity_home);
 

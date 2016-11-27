@@ -4,6 +4,7 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.nostra13.universalimageloader.cache.disc.DiskCache;
+import com.nostra13.universalimageloader.cache.disc.impl.LimitedAgeDiskCache;
 import com.nostra13.universalimageloader.cache.memory.MemoryCache;
 import com.nostra13.universalimageloader.cache.memory.impl.LRULimitedMemoryCache;
 import com.nostra13.universalimageloader.core.DefaultConfigurationFactory;
@@ -12,6 +13,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.utils.StorageUtils;
 
 /**
  * Created by tangsir on 2016/11/25.
@@ -48,7 +50,8 @@ public class ImageUtils {
     public static void initImageLoader(Context context) {
 
         LogUtils.debug("initImageLoader");
-        DiskCache cache = null;
+        DiskCache cache = new LimitedAgeDiskCache(
+                StorageUtils.getCacheDirectory(context),3600*24);
 
 
         MemoryCache memoryCache = new LRULimitedMemoryCache(15 * 1024 * 1024);

@@ -2,7 +2,7 @@ package com.tang.imagesea.manager;
 
 import com.tang.imagesea.model.PhotoBean;
 import com.tang.imagesea.model.PhotoDetailBean;
-import com.tang.imagesea.network.UnSplashClient;
+import com.tang.imagesea.network.UnSplash;
 import com.tang.imagesea.utils.LogUtils;
 
 import java.util.List;
@@ -15,12 +15,12 @@ import retrofit2.Call;
 
 public class DataWorker {
     static List<PhotoBean> getPhotos(int page, int pageSize, String orderBy){
+        LogUtils.showLog("enter DataWorker, getPhotos,page="+page);
         Call<List<PhotoBean>> photosCall =
-                UnSplashClient.getServer().getPhotos(page, pageSize, orderBy);
+                UnSplash.getInstance().getServer().getPhotos(page, pageSize, orderBy);
         List<PhotoBean> photos = null;
         try{
             photos = photosCall.execute().body();
-            //LogUtils.showLog("DataWorker, header = "+ photosCall.execute().headers().toString());
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class DataWorker {
     }
 
     public static PhotoDetailBean getPhotoDetail(String id){
-        Call<PhotoDetailBean> detailCall = UnSplashClient.getServer().getPhotoDetail(id);
+        Call<PhotoDetailBean> detailCall = UnSplash.getInstance().getServer().getPhotoDetail(id);
         PhotoDetailBean detail = null;
         try {
             detail = detailCall.execute().body();
