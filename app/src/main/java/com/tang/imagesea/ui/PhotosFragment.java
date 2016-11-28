@@ -1,5 +1,6 @@
 package com.tang.imagesea.ui;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -36,12 +37,12 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker {
     @BindView(R.id.photo_list)
     RecyclerView photoListView;
 
+    private ProgressDialog progressDialog = null;
+
     PhotoRecyclerAdapter adapter;
     PhotoListScrollListener scrollListener;
 
     DataDisposeHandler dataHandler;
-
-    //private int currentDataPage = 1;
 
     private SparseArray pageStatusArray =  new SparseArray();
     private static final int PAGE_STATUS_LOADING = 1;
@@ -60,7 +61,6 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        loadPhotosByPage(1);
     }
 
     @Override
@@ -71,6 +71,21 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker {
         ButterKnife.bind(this, rootView);
         initView();
         return rootView;
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState){
+        super.onActivityCreated(savedInstanceState);
+        showProgressDialog();
+        loadPhotosByPage(1);
+    }
+
+    @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        if (progressDialog!=null){
+            progressDialog.dismiss();
+        }
     }
 
     private void initView(){
@@ -120,8 +135,21 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker {
         }
     }
 
+    private void showProgressDialog(){
+        if (progressDialog ==null){
+            progressDialog = new ProgressDialog(getActivity());
+        }
+
+        progressDialog.show();
+    }
+    private void hideProgressDialog(){
+        if (progressDialog.isShowing()){
+            progressDialog.hide();
+        }
+    }
     private void updatePhotoData(int page,List<PhotoBean> photos){
         LogUtils.showLog("updatePhotoData,page="+page);
+        hideProgressDialog();
         if ((int) pageStatusArray.get(page) == PAGE_STATUS_LOAD_SUCCESS){
             return;
         }
@@ -135,6 +163,7 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker {
     }
 
     private void onLoadPhotoFail(int page){
+        hideProgressDialog();
         pageStatusArray.put(page, PAGE_STATUS_LOAD_FAIL);
         scrollListener.setLoadFinished(page, false);
     }

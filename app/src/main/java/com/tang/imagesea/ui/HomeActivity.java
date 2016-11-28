@@ -1,56 +1,55 @@
 package com.tang.imagesea.ui;
 
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
 import com.tang.imagesea.R;
-import com.tang.imagesea.network.UnSplash;
 import com.tang.imagesea.ui.adapter.SectionPagerAdapter;
-import com.tang.imagesea.utils.ImageUtils;
 import com.tang.imagesea.utils.LogUtils;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class HomeActivity extends AppCompatActivity {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.container)
+    ViewPager mViewPager;
+
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
 
     private SectionPagerAdapter mSectionsPagerAdapter;
-
-    private ViewPager mViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtils.init();
-        UnSplash.getInstance().init(getApplicationContext());
-        ImageUtils.initImageLoader(getApplicationContext());
         setContentView(R.layout.activity_home);
+        ButterKnife.bind(this);
 
         initToolBar();
         mSectionsPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
-        mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
     }
 
     private void initToolBar(){
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setNavigationIcon(R.drawable.ic_menu_list);
+        //toolbar.setNavigationIcon(R.drawable.ic_menu_list);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar.setTitle(R.string.home_title);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {

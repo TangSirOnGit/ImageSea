@@ -49,7 +49,7 @@ public class PhotoListScrollListener extends
 
         LogUtils.showLog("onScrolled, lastItem="+lastItem+",loading="+loading);
 
-        if(lastItem >= (totalItemCount-10) && !loading){
+        if(lastItem >= (totalItemCount-20) && !loading){
             worker.loadMore(lastSuccessPage+1);
             loading = true;
         }
