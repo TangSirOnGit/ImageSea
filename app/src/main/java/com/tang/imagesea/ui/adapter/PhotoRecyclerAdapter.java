@@ -55,10 +55,6 @@ public class PhotoRecyclerAdapter extends RecyclerView.Adapter<PhotoRecyclerAdap
         notifyDataSetChanged();
     }
 
-    public List<PhotoBean> getmDatas() {
-        return mDatas;
-    }
-
     public void addDatas(List<PhotoBean> mDatas) {
         this.mDatas.addAll(mDatas);
         notifyDataSetChanged();

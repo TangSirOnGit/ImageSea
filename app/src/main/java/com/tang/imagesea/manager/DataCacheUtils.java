@@ -25,16 +25,20 @@ public class DataCacheUtils {
                 PHOTO_CACHE_SIZE);
     }
 
-    public void addPhotosToCache(String photoTYpe, int pageIndex,
+    void addPhotosToCache(String photoTYpe,String orderBy, int pageIndex,
                                        int pageSize, List<PhotoBean> value) {
 
-        mPhotosDataCache.put(photoTYpe + KEY_STRING_CONNECTOR + pageIndex
+        mPhotosDataCache.put(photoTYpe
+                + KEY_STRING_CONNECTOR + orderBy
+                + KEY_STRING_CONNECTOR + pageIndex
                 + KEY_STRING_CONNECTOR + pageSize, value);
     }
 
-    public List<PhotoBean> getPhotosFromCache(String photoType, int pageIndex,
+    List<PhotoBean> getPhotosFromCache(String photoType, String orderBy, int pageIndex,
                                            int pageSize) {
-        return mPhotosDataCache.get(photoType + KEY_STRING_CONNECTOR
-                + pageIndex + KEY_STRING_CONNECTOR + pageSize);
+        return mPhotosDataCache.get(photoType
+                + KEY_STRING_CONNECTOR + orderBy
+                + KEY_STRING_CONNECTOR + pageIndex
+                + KEY_STRING_CONNECTOR + pageSize);
     }
 }

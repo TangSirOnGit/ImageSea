@@ -51,19 +51,20 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker, OnPhoto
     private static final int PAGE_STATUS_LOADING = 1;
     private static final int PAGE_STATUS_LOAD_SUCCESS = 2;
     private static final int PAGE_STATUS_LOAD_FAIL = 3;
-    private String imageType = "latest";
+    private String orderBy = "";
+    private String photoType = "";
 
-    public PhotosFragment(String photoType) {
-        this.imageType = photoType;
-        // Required empty public constructor
+    public PhotosFragment(String photoType, String orderBy) {
+        this.orderBy = orderBy;
+        this.photoType = photoType;
     }
 
     public PhotosFragment() {
     }
 
 
-    public static PhotosFragment newInstance(String photoType) {
-        return  new PhotosFragment(photoType);
+    public static PhotosFragment newInstance(String photoType, String sortby) {
+        return  new PhotosFragment(photoType, sortby);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker, OnPhoto
     @Override
     public void onActivityCreated(Bundle savedInstanceState){
         super.onActivityCreated(savedInstanceState);
-        showProgressDialog();
+        //showProgressDialog();
         loadPhotosByPage(1);
     }
 
@@ -127,9 +128,9 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker, OnPhoto
     }
 
     private void getPhotos(int page){
-        LogUtils.showLog("getPhotos, page="+page);
-        List<PhotoBean> photos= DataManager.getPhotos(page , Constants.PHOTOS_PAGE_SIZE,imageType);
-        LogUtils.showLog("getPhotos, photos="+photos);
+        List<PhotoBean> photos= DataManager.getPhotos(page , Constants.PHOTOS_PAGE_SIZE, photoType, orderBy);
+        LogUtils.showLog("getPhotos, photoType="+photoType
+                +",photos="+photos);
         if (photos != null) {
             Message msg = dataHandler.obtainMessage(Constants.MSG_GET_PHOTOS_SUCCESS);
             msg.arg1 = page;
@@ -160,7 +161,7 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker, OnPhoto
     }
     private void updatePhotoData(int page,List<PhotoBean> photos){
         LogUtils.showLog("updatePhotoData,page="+page);
-        hideProgressDialog();
+        //hideProgressDialog();
         if ((int) pageStatusArray.get(page) == PAGE_STATUS_LOAD_SUCCESS){
             return;
         }
@@ -198,8 +199,8 @@ public class PhotosFragment extends Fragment implements ScrollEndWorker, OnPhoto
 
     private void gotoFullScreenActivity(int position){
         Intent imageIntent =  new Intent(getActivity(), FullscreenImageActivity.class);
-        //imageIntent.putExtra(ParamUtils.KEY_PHOTO_BEAN,photo);
-        imageIntent.putExtra(ParamUtils.KEY_PHOTO_TYPE,imageType);
+        imageIntent.putExtra(ParamUtils.KEY_PHOTO_TYPE, photoType);
+        imageIntent.putExtra(ParamUtils.KEY_ORDER_BY, orderBy);
         imageIntent.putExtra(ParamUtils.KEY_PHOTO_PAGE_INDEX,getPageIndex(position));
         imageIntent.putExtra(ParamUtils.KEY_PHOTO_ITEM_INDEX,getPosition(position));
         getActivity().startActivity(imageIntent);

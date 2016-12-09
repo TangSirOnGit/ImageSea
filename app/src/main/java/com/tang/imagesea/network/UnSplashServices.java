@@ -24,6 +24,13 @@ public interface UnSplashServices {
             @Query("per_page") int pageSize,
             @Query("order_by") String orderBy);
 
+    @Headers({BuildConfig.API_KEY, "Cache-Control: public, max-age=3600"})
+    @GET("/photos/curated")
+    Call<List<PhotoBean>> getCuratedPhotos(
+            @Query("page") int page,
+            @Query("per_page") int pageSize,
+            @Query("order_by") String orderBy);
+
     @GET("/photos/{id}")
     @Headers(BuildConfig.API_KEY)
     Call<PhotoDetailBean> getPhotoDetail(
