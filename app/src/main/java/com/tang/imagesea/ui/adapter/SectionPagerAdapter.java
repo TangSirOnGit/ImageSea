@@ -22,7 +22,9 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
         // getItem is called to instantiate the fragment for the given page.
         // Return a PlaceholderFragment (defined as a static inner class below).
         if (position==0){
-            return PhotosFragment.newInstance();
+            return PhotosFragment.newInstance("latest");
+        }else if(position==1){
+            return PhotosFragment.newInstance("latest");
         }
         return HomeActivity.PlaceholderFragment.newInstance(position + 1);
     }
@@ -30,7 +32,7 @@ public class SectionPagerAdapter extends FragmentPagerAdapter {
     @Override
     public int getCount() {
         // Show 3 total pages.
-        return 2;
+        return 3;
     }
 
     @Override

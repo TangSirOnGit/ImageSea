@@ -19,12 +19,33 @@
                 android:scaleType="fitXY"
                 />
 
-        <!--<ImageView-->
-                <!--android:id="@+id/photo_item_img"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--android:scaleType="fitXY"-->
-                <!--/>-->
+        <LinearLayout
+                android:id="@+id/id_photo_item_author_info"
+                android:orientation="horizontal"
+                android:layout_marginLeft="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                >
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/photo_item_author_pic"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    fresco:roundAsCircle="true"
+                    />
+
+            <TextView
+                    android:id="@+id/photo_item_author_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="10dp"
+                    android:textSize="16sp"
+                    android:textColor="@color/secondary_text"
+                    />
+        </LinearLayout>
     </FrameLayout>
 
 </RelativeLayout>

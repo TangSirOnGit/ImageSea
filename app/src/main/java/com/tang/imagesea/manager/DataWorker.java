@@ -24,6 +24,9 @@ public class DataWorker {
         }catch (Exception e){
             e.printStackTrace();
         }
+        if (photos != null){
+            DataCacheUtils.getInstance().addPhotosToCache(orderBy, page, pageSize, photos);
+        }
         LogUtils.showLog("DataWorker, getPhotos,page="+page+",photos="+photos);
         return photos;
     }

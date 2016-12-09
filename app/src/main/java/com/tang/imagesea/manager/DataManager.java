@@ -11,8 +11,15 @@ import java.util.List;
 
 public class DataManager {
 
-    public static List<PhotoBean> getPhotos(int page, int pageSize, String orderBy){
-        return DataWorker.getPhotos(page, pageSize, orderBy);
+    public static List<PhotoBean> getPhotos(int page, int pageSize, String photoType){
+        List<PhotoBean> photos =
+                DataCacheUtils.getInstance().getPhotosFromCache(photoType, page, pageSize);
+        if (photos==null){
+            return DataWorker.getPhotos(page, pageSize, photoType);
+        }else{
+            return photos;
+        }
+
     }
 
     public static PhotoDetailBean getPhotoDetail(String id){
